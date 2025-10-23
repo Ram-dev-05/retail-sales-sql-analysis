@@ -1,0 +1,28 @@
+# Windows system files
+Thumbs.db
+desktop.ini
+$RECYCLE.BIN/
+
+# Mac system files (safe to keep for cross-platform)
+.DS_Store
+
+# Editor folders
+.vscode/
+.idea/
+
+# Logs and temporary files
+*.log
+*.tmp
+
+# Environment and secret config files
+.env
+config.json
+
+# Excel files (if you generate or use them)
+*.xlsx
+
+# Python and Jupyter files (if used in your project)
+*.ipynb_checkpoints
+*.pyc
+__pycache__/
+
