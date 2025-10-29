@@ -7,7 +7,7 @@ The project repository was initialized with a descriptive name and a foundationa
 - Related files: `.gitignore`, `README.md`
 
 ## 2. Data Modeling
-The database schema was modeled, including key entities (Customers, Products, Orders, Sales, Regions). The ER diagrams visualize relationships and normalization steps.
+The database schema was modeled, including key entities (Customers, Products, Orders, Order_items, Regions). The ER diagrams visualize relationships and normalization steps.
 - Related files: `Retail-Sales-ERD.png`, `Updated_Retail-Sales-ERD.png`
 
 ## 3. Database Creation
