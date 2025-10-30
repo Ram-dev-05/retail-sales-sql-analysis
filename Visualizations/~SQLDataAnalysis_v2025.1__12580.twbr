@@ -21,7 +21,7 @@
     <WindowsPersistSimpleIdentifiers />
     <ZoneBackgroundTransparency />
   </document-format-change-manifest>
-  <repository-location id='SQLRetailDataAnalysis' path='/t/janakiramdev05-08b0fec514/workbooks' revision='1.0' site='janakiramdev05-08b0fec514' />
+  <repository-location id='SQLRetialsalesAnalysis' path='/t/janakiramdev05-08b0fec514/workbooks' revision='1.0' site='janakiramdev05-08b0fec514' />
   <preferences>
     <preference name='ui.encoding.shelf.height' value='24' />
     <preference name='ui.shelf.height' value='26' />
@@ -29,8 +29,8 @@
   <datasources>
     <datasource hasconnection='false' inline='true' name='Parameters' version='18.1'>
       <aliases enabled='yes' />
-      <column caption='Top N' datatype='integer' name='[Parameter 1]' param-domain-type='range' role='measure' type='quantitative' value='12'>
-        <calculation class='tableau' formula='12' />
+      <column caption='Top N' datatype='integer' name='[Parameter 1]' param-domain-type='range' role='measure' type='quantitative' value='14'>
+        <calculation class='tableau' formula='14' />
         <range granularity='1' max='20' min='1' />
       </column>
     </datasource>
@@ -38,7 +38,7 @@
       <connection class='federated'>
         <named-connections>
           <named-connection caption='localhost' name='postgres.1036m351xm1qp518wwtaj00kqra0'>
-            <connection authentication='username-password' class='postgres' dbname='retail_sales' one-time-sql='' port='5432' server='localhost' server-oauth='' server-userid='4347421' username='postgres' workgroup-auth-mode='prompt' />
+            <connection authentication='username-password' class='postgres' dbname='retail_sales' one-time-sql='' port='5432' server='localhost' server-oauth='' server-userid='4347421' username='postgres' workgroup-auth-mode='as-is' />
           </named-connection>
         </named-connections>
         <relation type='collection'>
@@ -614,13 +614,25 @@
       <column caption='Unit Price' datatype='real' name='[unit_price]' role='measure' type='quantitative' />
       <column caption='Zip Code' datatype='string' name='[zip_code]' role='dimension' semantic-role='[ZipCode].[Name]' type='nominal' />
       <column-instance column='[customer_segment]' derivation='None' name='[none:customer_segment:nk]' pivot='key' type='nominal' />
+      <column-instance column='[ship_mode]' derivation='None' name='[none:ship_mode:nk]' pivot='key' type='nominal' />
       <group caption='Action (Customer Segment)' hidden='true' name='[Action (Customer Segment)]' name-style='unqualified' user:auto-column='sheet_link'>
         <groupfilter function='crossjoin'>
           <groupfilter function='level-members' level='[customer_segment]' />
         </groupfilter>
       </group>
+      <group caption='Action (Order Priority,Ship Mode)' hidden='true' name='[Action (Order Priority,Ship Mode)]' name-style='unqualified' user:auto-column='sheet_link'>
+        <groupfilter function='crossjoin'>
+          <groupfilter function='level-members' level='[order_priority]' />
+          <groupfilter function='level-members' level='[ship_mode]' />
+        </groupfilter>
+      </group>
+      <group caption='Action (Region)' hidden='true' name='[Action (Region)]' name-style='unqualified' user:auto-column='sheet_link'>
+        <groupfilter function='crossjoin'>
+          <groupfilter function='level-members' level='[region]' />
+        </groupfilter>
+      </group>
       <extract _.fcp.VConnDownstreamExtractsWithWarnings.true...user-specific='false' count='-1' enabled='true' object-id='' units='records'>
-        <connection access_mode='readonly' authentication='auth-none' author-locale='en_US' class='hyper' dbname='Data/SQLDataAnalysis_v2025.1.twb Files/orders (retail.hyper' default-settings='yes' schema='Extract' sslmode='' tablename='Extract' update-time='' username='tableau_internal_user'>
+        <connection access_mode='readonly' authentication='auth-none' author-locale='en_US' class='hyper' dbname='Data/SQLDataAnalysis_v2025.1.twb Files/orders (retail.hyper' default-settings='yes' schema='Extract' sslmode='' tablename='Extract' update-time='10/30/2025 01:23:40 PM' username='tableau_internal_user'>
           <relation type='collection'>
             <relation name='orders (retail.orders)_5D9F71A78B74488A9C51A150E476DB85' table='[Extract].[orders (retail.orders)_5D9F71A78B74488A9C51A150E476DB85]' type='table' />
             <relation name='customers (retail.customers)_257CC3244C0545D1B6A0DE9ADF61BD04' table='[Extract].[customers (retail.customers)_257CC3244C0545D1B6A0DE9ADF61BD04]' type='table' />
@@ -662,6 +674,9 @@
             <map key='[unit_price]' value='[products (retail.products)_59D4936168C44FD0B1F2DAC45F98D3B3].[unit_price]' />
             <map key='[zip_code]' value='[regions (retail.regions)_36B3E5F90BD8491490BEC2107A09ED4A].[zip_code]' />
           </cols>
+          <refresh>
+            <refresh-event add-from-file-path='orders (retail.orders)+ (retail_sales)' increment-value='%null%' refresh-type='create' rows-inserted='85940' timestamp-start='2025-10-30 13:23:39.293' />
+          </refresh>
           <metadata-records>
             <metadata-record class='column'>
               <remote-name>order_id</remote-name>
@@ -675,6 +690,7 @@
               <aggregation>Sum</aggregation>
               <approx-count>3477</approx-count>
               <contains-null>true</contains-null>
+              <object-id>[orders (retail.orders)_5D9F71A78B74488A9C51A150E476DB85]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>customer_id</remote-name>
@@ -688,6 +704,7 @@
               <aggregation>Sum</aggregation>
               <approx-count>1279</approx-count>
               <contains-null>true</contains-null>
+              <object-id>[orders (retail.orders)_5D9F71A78B74488A9C51A150E476DB85]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>region_id</remote-name>
@@ -701,6 +718,7 @@
               <aggregation>Sum</aggregation>
               <approx-count>1674</approx-count>
               <contains-null>true</contains-null>
+              <object-id>[orders (retail.orders)_5D9F71A78B74488A9C51A150E476DB85]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>order_date</remote-name>
@@ -714,6 +732,7 @@
               <aggregation>Year</aggregation>
               <approx-count>1618</approx-count>
               <contains-null>true</contains-null>
+              <object-id>[orders (retail.orders)_5D9F71A78B74488A9C51A150E476DB85]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>order_priority</remote-name>
@@ -728,6 +747,7 @@
               <approx-count>5</approx-count>
               <contains-null>true</contains-null>
               <collation flag='0' name='LEN_RUS' />
+              <object-id>[orders (retail.orders)_5D9F71A78B74488A9C51A150E476DB85]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>discount</remote-name>
@@ -741,6 +761,7 @@
               <aggregation>Sum</aggregation>
               <approx-count>16</approx-count>
               <contains-null>true</contains-null>
+              <object-id>[orders (retail.orders)_5D9F71A78B74488A9C51A150E476DB85]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>ship_date</remote-name>
@@ -754,6 +775,7 @@
               <aggregation>Year</aggregation>
               <approx-count>1703</approx-count>
               <contains-null>true</contains-null>
+              <object-id>[orders (retail.orders)_5D9F71A78B74488A9C51A150E476DB85]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>ship_mode</remote-name>
@@ -768,6 +790,7 @@
               <approx-count>3</approx-count>
               <contains-null>true</contains-null>
               <collation flag='0' name='LEN_RUS' />
+              <object-id>[orders (retail.orders)_5D9F71A78B74488A9C51A150E476DB85]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>shipping_cost</remote-name>
@@ -781,6 +804,7 @@
               <aggregation>Sum</aggregation>
               <approx-count>698</approx-count>
               <contains-null>true</contains-null>
+              <object-id>[orders (retail.orders)_5D9F71A78B74488A9C51A150E476DB85]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>order_unique_id</remote-name>
@@ -794,6 +818,7 @@
               <aggregation>Sum</aggregation>
               <approx-count>8686</approx-count>
               <contains-null>false</contains-null>
+              <object-id>[orders (retail.orders)_5D9F71A78B74488A9C51A150E476DB85]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>customer_id</remote-name>
@@ -807,6 +832,7 @@
               <aggregation>Sum</aggregation>
               <approx-count>989</approx-count>
               <contains-null>false</contains-null>
+              <object-id>[customers (retail.customers)_257CC3244C0545D1B6A0DE9ADF61BD04]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>customer_name</remote-name>
@@ -821,6 +847,7 @@
               <approx-count>795</approx-count>
               <contains-null>true</contains-null>
               <collation flag='0' name='LEN_RUS' />
+              <object-id>[customers (retail.customers)_257CC3244C0545D1B6A0DE9ADF61BD04]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>customer_age</remote-name>
@@ -834,6 +861,7 @@
               <aggregation>Sum</aggregation>
               <approx-count>45</approx-count>
               <contains-null>true</contains-null>
+              <object-id>[customers (retail.customers)_257CC3244C0545D1B6A0DE9ADF61BD04]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>customer_segment</remote-name>
@@ -848,6 +876,7 @@
               <approx-count>4</approx-count>
               <contains-null>true</contains-null>
               <collation flag='0' name='LEN_RUS' />
+              <object-id>[customers (retail.customers)_257CC3244C0545D1B6A0DE9ADF61BD04]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>order_item_id</remote-name>
@@ -861,6 +890,7 @@
               <aggregation>Sum</aggregation>
               <approx-count>73366</approx-count>
               <contains-null>true</contains-null>
+              <object-id>[order_items (retail.order_items)_34821B7F42024983A4542B4027CEC52C]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>order_unique_id</remote-name>
@@ -874,6 +904,7 @@
               <aggregation>Sum</aggregation>
               <approx-count>14625</approx-count>
               <contains-null>true</contains-null>
+              <object-id>[order_items (retail.order_items)_34821B7F42024983A4542B4027CEC52C]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>product_id</remote-name>
@@ -887,6 +918,7 @@
               <aggregation>Sum</aggregation>
               <approx-count>3303</approx-count>
               <contains-null>true</contains-null>
+              <object-id>[order_items (retail.order_items)_34821B7F42024983A4542B4027CEC52C]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>order_quantity</remote-name>
@@ -900,6 +932,7 @@
               <aggregation>Sum</aggregation>
               <approx-count>50</approx-count>
               <contains-null>true</contains-null>
+              <object-id>[order_items (retail.order_items)_34821B7F42024983A4542B4027CEC52C]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>sales</remote-name>
@@ -913,6 +946,7 @@
               <aggregation>Sum</aggregation>
               <approx-count>14423</approx-count>
               <contains-null>true</contains-null>
+              <object-id>[order_items (retail.order_items)_34821B7F42024983A4542B4027CEC52C]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>profit</remote-name>
@@ -926,6 +960,7 @@
               <aggregation>Sum</aggregation>
               <approx-count>13683</approx-count>
               <contains-null>true</contains-null>
+              <object-id>[order_items (retail.order_items)_34821B7F42024983A4542B4027CEC52C]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>product_id</remote-name>
@@ -939,6 +974,7 @@
               <aggregation>Sum</aggregation>
               <approx-count>1263</approx-count>
               <contains-null>false</contains-null>
+              <object-id>[products (retail.products)_59D4936168C44FD0B1F2DAC45F98D3B3]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>product_name</remote-name>
@@ -953,6 +989,7 @@
               <approx-count>1263</approx-count>
               <contains-null>true</contains-null>
               <collation flag='0' name='LEN_RUS' />
+              <object-id>[products (retail.products)_59D4936168C44FD0B1F2DAC45F98D3B3]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>product_category</remote-name>
@@ -967,6 +1004,7 @@
               <approx-count>3</approx-count>
               <contains-null>true</contains-null>
               <collation flag='0' name='LEN_RUS' />
+              <object-id>[products (retail.products)_59D4936168C44FD0B1F2DAC45F98D3B3]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>product_sub_category</remote-name>
@@ -981,6 +1019,7 @@
               <approx-count>17</approx-count>
               <contains-null>true</contains-null>
               <collation flag='0' name='LEN_RUS' />
+              <object-id>[products (retail.products)_59D4936168C44FD0B1F2DAC45F98D3B3]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>product_container</remote-name>
@@ -995,6 +1034,7 @@
               <approx-count>7</approx-count>
               <contains-null>true</contains-null>
               <collation flag='0' name='LEN_RUS' />
+              <object-id>[products (retail.products)_59D4936168C44FD0B1F2DAC45F98D3B3]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>unit_price</remote-name>
@@ -1008,6 +1048,7 @@
               <aggregation>Sum</aggregation>
               <approx-count>692</approx-count>
               <contains-null>true</contains-null>
+              <object-id>[products (retail.products)_59D4936168C44FD0B1F2DAC45F98D3B3]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>product_base_margin</remote-name>
@@ -1021,6 +1062,7 @@
               <aggregation>Sum</aggregation>
               <approx-count>52</approx-count>
               <contains-null>true</contains-null>
+              <object-id>[products (retail.products)_59D4936168C44FD0B1F2DAC45F98D3B3]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>region_id</remote-name>
@@ -1034,6 +1076,7 @@
               <aggregation>Sum</aggregation>
               <approx-count>1636</approx-count>
               <contains-null>false</contains-null>
+              <object-id>[regions (retail.regions)_36B3E5F90BD8491490BEC2107A09ED4A]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>region</remote-name>
@@ -1048,6 +1091,7 @@
               <approx-count>4</approx-count>
               <contains-null>true</contains-null>
               <collation flag='0' name='LEN_RUS' />
+              <object-id>[regions (retail.regions)_36B3E5F90BD8491490BEC2107A09ED4A]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>state</remote-name>
@@ -1062,6 +1106,7 @@
               <approx-count>48</approx-count>
               <contains-null>true</contains-null>
               <collation flag='0' name='LEN_RUS' />
+              <object-id>[regions (retail.regions)_36B3E5F90BD8491490BEC2107A09ED4A]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>city</remote-name>
@@ -1076,6 +1121,7 @@
               <approx-count>1179</approx-count>
               <contains-null>true</contains-null>
               <collation flag='0' name='LEN_RUS' />
+              <object-id>[regions (retail.regions)_36B3E5F90BD8491490BEC2107A09ED4A]</object-id>
             </metadata-record>
             <metadata-record class='column'>
               <remote-name>zip_code</remote-name>
@@ -1090,6 +1136,7 @@
               <approx-count>1593</approx-count>
               <contains-null>true</contains-null>
               <collation flag='0' name='LEN_RUS' />
+              <object-id>[regions (retail.regions)_36B3E5F90BD8491490BEC2107A09ED4A]</object-id>
             </metadata-record>
           </metadata-records>
         </connection>
@@ -1111,6 +1158,17 @@
               <bucket>&quot;Corporate&quot;</bucket>
             </map>
           </encoding>
+          <encoding attr='color' field='[none:ship_mode:nk]' type='palette'>
+            <map to='#4e79a7'>
+              <bucket>&quot;Delivery Truck&quot;</bucket>
+            </map>
+            <map to='#e15759'>
+              <bucket>&quot;Regular Air&quot;</bucket>
+            </map>
+            <map to='#f28e2b'>
+              <bucket>&quot;Express Air&quot;</bucket>
+            </map>
+          </encoding>
         </style-rule>
       </style>
       <semantic-values>
@@ -1129,8 +1187,8 @@
         <field-sort-custom-order field='order_unique_id' />
       </field-sort-info>
       <datasource-dependencies datasource='Parameters'>
-        <column caption='Top N' datatype='integer' name='[Parameter 1]' param-domain-type='range' role='measure' type='quantitative' value='12'>
-          <calculation class='tableau' formula='12' />
+        <column caption='Top N' datatype='integer' name='[Parameter 1]' param-domain-type='range' role='measure' type='quantitative' value='14'>
+          <calculation class='tableau' formula='14' />
           <range granularity='1' max='20' min='1' />
         </column>
       </datasource-dependencies>
@@ -1240,11 +1298,30 @@
         <param name='target' value='CUST_Profit_Segment_DASH' />
       </command>
     </action>
+    <action caption='Customer Segmentation' name='[Action4_B7289DA5AC8C469ABE4204F37A6BCFDE]'>
+      <activation auto-clear='true' type='on-select' />
+      <source dashboard='RetailAnalysis' type='sheet' worksheet='CUST_Segment_Distribution_Pie' />
+      <command command='tsc:tsl-filter'>
+        <param name='exclude' value='CUST_Segment_Distribution_Pie' />
+        <param name='special-fields' value='all' />
+        <param name='target' value='RetailAnalysis' />
+      </command>
+    </action>
+    <action caption='Region' name='[Action5_3DE7DB69E9BA452D90A5747FA90ED3F3]'>
+      <activation auto-clear='true' type='on-select' />
+      <source dashboard='RetailAnalysis' type='sheet' worksheet='ORD_Priority_ShipMode_BAR' />
+      <link caption='Region' delimiter=',' escape='\' expression='tsl:RetailAnalysis?%5Bfederated.12yhc75078830y13z5bwp0b4kmwp%5D.%5Bregion%5D~s0=&lt;[federated.12yhc75078830y13z5bwp0b4kmwp].[region]~na&gt;' include-null='true' multi-select='true' url-escape='true' />
+      <command command='tsc:tsl-filter'>
+        <param name='exclude' value='ORD_Priority_ShipMode_BAR' />
+        <param name='target' value='RetailAnalysis' />
+      </command>
+    </action>
     <datasources>
       <datasource caption='orders (retail.orders)+ (retail_sales)' name='federated.12yhc75078830y13z5bwp0b4kmwp' />
     </datasources>
     <datasource-dependencies datasource='federated.12yhc75078830y13z5bwp0b4kmwp'>
       <column caption='Customer Segment' datatype='string' name='[customer_segment]' role='dimension' type='nominal' />
+      <column caption='Region' datatype='string' name='[region]' role='dimension' type='nominal' />
     </datasource-dependencies>
   </actions>
   <worksheets>
@@ -1268,8 +1345,8 @@
             <datasource name='Parameters' />
           </datasources>
           <datasource-dependencies datasource='Parameters'>
-            <column caption='Top N' datatype='integer' name='[Parameter 1]' param-domain-type='range' role='measure' type='quantitative' value='12'>
-              <calculation class='tableau' formula='12' />
+            <column caption='Top N' datatype='integer' name='[Parameter 1]' param-domain-type='range' role='measure' type='quantitative' value='14'>
+              <calculation class='tableau' formula='14' />
               <range granularity='1' max='20' min='1' />
             </column>
           </datasource-dependencies>
@@ -1292,7 +1369,7 @@
           <filter class='categorical' column='[federated.12yhc75078830y13z5bwp0b4kmwp].[Action (Customer Segment)]'>
             <groupfilter function='level-members' level='[customer_segment]' user:ui-action-filter='[Action2_17A6DED27F2E47119EFAB50228F832D0]' user:ui-enumeration='all' user:ui-marker='enumerate' />
           </filter>
-          <filter class='categorical' column='[federated.12yhc75078830y13z5bwp0b4kmwp].[none:customer_segment:nk]' filter-group='3'>
+          <filter class='categorical' column='[federated.12yhc75078830y13z5bwp0b4kmwp].[none:customer_segment:nk]' filter-group='4'>
             <groupfilter function='level-members' level='[none:customer_segment:nk]' user:ui-enumeration='all' user:ui-marker='enumerate' />
           </filter>
           <filter class='categorical' column='[federated.12yhc75078830y13z5bwp0b4kmwp].[usr:Rank by Profit (copy)_840765756208361478:nk]'>
@@ -1359,7 +1436,7 @@
             <column-instance column='[region]' derivation='None' name='[none:region:nk]' pivot='key' type='nominal' />
             <column caption='Region' datatype='string' name='[region]' role='dimension' type='nominal' />
           </datasource-dependencies>
-          <filter class='categorical' column='[federated.12yhc75078830y13z5bwp0b4kmwp].[none:customer_segment:nk]' filter-group='3'>
+          <filter class='categorical' column='[federated.12yhc75078830y13z5bwp0b4kmwp].[none:customer_segment:nk]' filter-group='4'>
             <groupfilter function='level-members' level='[none:customer_segment:nk]' user:ui-enumeration='all' user:ui-marker='enumerate' />
           </filter>
           <filter class='categorical' column='[federated.12yhc75078830y13z5bwp0b4kmwp].[none:region:nk]'>
@@ -1422,6 +1499,8 @@
           </datasources>
           <datasource-dependencies datasource='federated.12yhc75078830y13z5bwp0b4kmwp'>
             <column-instance column='[order_id]' derivation='CountD' name='[ctd:order_id:qk]' pivot='key' type='quantitative' />
+            <column caption='Customer Segment' datatype='string' name='[customer_segment]' role='dimension' type='nominal' />
+            <column-instance column='[customer_segment]' derivation='None' name='[none:customer_segment:nk]' pivot='key' type='nominal' />
             <column-instance column='[order_priority]' derivation='None' name='[none:order_priority:nk]' pivot='key' type='nominal' />
             <column-instance column='[region]' derivation='None' name='[none:region:nk]' pivot='key' type='nominal' />
             <column-instance column='[ship_mode]' derivation='None' name='[none:ship_mode:nk]' pivot='key' type='nominal' />
@@ -1432,7 +1511,16 @@
             <column caption='Ship Mode' datatype='string' name='[ship_mode]' role='dimension' type='nominal' />
             <column-instance column='[order_date]' derivation='Year' name='[yr:order_date:ok]' pivot='key' type='ordinal' />
           </datasource-dependencies>
-          <filter class='quantitative' column='[federated.12yhc75078830y13z5bwp0b4kmwp].[ctd:order_id:qk]' included-values='all' />
+          <filter class='categorical' column='[federated.12yhc75078830y13z5bwp0b4kmwp].[Action (Customer Segment)]'>
+            <groupfilter function='level-members' level='[customer_segment]' user:ui-action-filter='[Action4_B7289DA5AC8C469ABE4204F37A6BCFDE]' user:ui-enumeration='all' user:ui-marker='enumerate' />
+          </filter>
+          <filter class='quantitative' column='[federated.12yhc75078830y13z5bwp0b4kmwp].[ctd:order_id:qk]' included-values='in-range-or-null'>
+            <min>126</min>
+            <max>883</max>
+          </filter>
+          <filter class='categorical' column='[federated.12yhc75078830y13z5bwp0b4kmwp].[none:customer_segment:nk]' filter-group='4'>
+            <groupfilter function='level-members' level='[none:customer_segment:nk]' user:ui-enumeration='all' user:ui-marker='enumerate' />
+          </filter>
           <filter class='categorical' column='[federated.12yhc75078830y13z5bwp0b4kmwp].[none:region:nk]'>
             <groupfilter function='level-members' level='[none:region:nk]' user:ui-enumeration='all' user:ui-marker='enumerate' />
           </filter>
@@ -1450,6 +1538,8 @@
             <column>[federated.12yhc75078830y13z5bwp0b4kmwp].[yr:order_date:ok]</column>
             <column>[federated.12yhc75078830y13z5bwp0b4kmwp].[none:region:nk]</column>
             <column>[federated.12yhc75078830y13z5bwp0b4kmwp].[none:ship_mode:nk]</column>
+            <column>[federated.12yhc75078830y13z5bwp0b4kmwp].[Action (Customer Segment)]</column>
+            <column>[federated.12yhc75078830y13z5bwp0b4kmwp].[none:customer_segment:nk]</column>
           </slices>
           <aggregation value='true' />
         </view>
@@ -1513,6 +1603,8 @@
             <column caption='Profit margin' datatype='real' name='[Calculation_840765756100788226]' role='measure' type='quantitative'>
               <calculation class='tableau' formula='(sum([profit])/sum([sales]))*100' />
             </column>
+            <column caption='Customer Segment' datatype='string' name='[customer_segment]' role='dimension' type='nominal' />
+            <column-instance column='[customer_segment]' derivation='None' name='[none:customer_segment:nk]' pivot='key' type='nominal' />
             <column-instance column='[product_category]' derivation='None' name='[none:product_category:nk]' pivot='key' type='nominal' />
             <column caption='Order Date' datatype='date' name='[order_date]' role='dimension' type='ordinal' />
             <column caption='Product Category' datatype='string' name='[product_category]' role='dimension' type='nominal' />
@@ -1523,6 +1615,12 @@
             <column-instance column='[Calculation_840765756100788226]' derivation='User' name='[usr:Calculation_840765756100788226:qk]' pivot='key' type='quantitative' />
             <column-instance column='[order_date]' derivation='Year' name='[yr:order_date:ok]' pivot='key' type='ordinal' />
           </datasource-dependencies>
+          <filter class='categorical' column='[federated.12yhc75078830y13z5bwp0b4kmwp].[Action (Customer Segment)]'>
+            <groupfilter function='level-members' level='[customer_segment]' user:ui-action-filter='[Action4_B7289DA5AC8C469ABE4204F37A6BCFDE]' user:ui-enumeration='all' user:ui-marker='enumerate' />
+          </filter>
+          <filter class='categorical' column='[federated.12yhc75078830y13z5bwp0b4kmwp].[none:customer_segment:nk]' filter-group='4'>
+            <groupfilter function='level-members' level='[none:customer_segment:nk]' user:ui-enumeration='all' user:ui-marker='enumerate' />
+          </filter>
           <filter class='quantitative' column='[federated.12yhc75078830y13z5bwp0b4kmwp].[usr:Calculation_840765756100788226:qk]' included-values='all' />
           <filter class='categorical' column='[federated.12yhc75078830y13z5bwp0b4kmwp].[yr:order_date:ok]'>
             <groupfilter function='level-members' level='[yr:order_date:ok]' user:ui-enumeration='all' user:ui-marker='enumerate' />
@@ -1533,6 +1631,8 @@
           <slices>
             <column>[federated.12yhc75078830y13z5bwp0b4kmwp].[yr:order_date:ok]</column>
             <column>[federated.12yhc75078830y13z5bwp0b4kmwp].[usr:Calculation_840765756100788226:qk]</column>
+            <column>[federated.12yhc75078830y13z5bwp0b4kmwp].[Action (Customer Segment)]</column>
+            <column>[federated.12yhc75078830y13z5bwp0b4kmwp].[none:customer_segment:nk]</column>
           </slices>
           <aggregation value='true' />
         </view>
@@ -1609,8 +1709,8 @@
             <datasource name='Parameters' />
           </datasources>
           <datasource-dependencies datasource='Parameters'>
-            <column caption='Top N' datatype='integer' name='[Parameter 1]' param-domain-type='range' role='measure' type='quantitative' value='12'>
-              <calculation class='tableau' formula='12' />
+            <column caption='Top N' datatype='integer' name='[Parameter 1]' param-domain-type='range' role='measure' type='quantitative' value='14'>
+              <calculation class='tableau' formula='14' />
               <range granularity='1' max='20' min='1' />
             </column>
           </datasource-dependencies>
@@ -1620,6 +1720,8 @@
                 <table-calc ordering-type='Rows' />
               </calculation>
             </column>
+            <column caption='Customer Segment' datatype='string' name='[customer_segment]' role='dimension' type='nominal' />
+            <column-instance column='[customer_segment]' derivation='None' name='[none:customer_segment:nk]' pivot='key' type='nominal' />
             <column-instance column='[product_name]' derivation='None' name='[none:product_name:nk]' pivot='key' type='nominal' />
             <column caption='Product Name' datatype='string' name='[product_name]' role='dimension' type='nominal' />
             <column caption='Sales' datatype='real' name='[sales]' role='measure' type='quantitative' />
@@ -1630,6 +1732,12 @@
             </column-instance>
             <column-instance column='[ship_date]' derivation='Year' name='[yr:ship_date:ok]' pivot='key' type='ordinal' />
           </datasource-dependencies>
+          <filter class='categorical' column='[federated.12yhc75078830y13z5bwp0b4kmwp].[Action (Customer Segment)]'>
+            <groupfilter function='level-members' level='[customer_segment]' user:ui-action-filter='[Action4_B7289DA5AC8C469ABE4204F37A6BCFDE]' user:ui-enumeration='all' user:ui-marker='enumerate' />
+          </filter>
+          <filter class='categorical' column='[federated.12yhc75078830y13z5bwp0b4kmwp].[none:customer_segment:nk]' filter-group='4'>
+            <groupfilter function='level-members' level='[none:customer_segment:nk]' user:ui-enumeration='all' user:ui-marker='enumerate' />
+          </filter>
           <filter class='categorical' column='[federated.12yhc75078830y13z5bwp0b4kmwp].[usr:Rank by Sales (copy)_840765756203175940:nk]'>
             <groupfilter function='member' level='[usr:Rank by Sales (copy)_840765756203175940:nk]' member='true' user:ui-domain='relevant' user:ui-enumeration='inclusive' user:ui-marker='enumerate' />
           </filter>
@@ -1642,6 +1750,8 @@
           <slices>
             <column>[federated.12yhc75078830y13z5bwp0b4kmwp].[usr:Rank by Sales (copy)_840765756203175940:nk]</column>
             <column>[federated.12yhc75078830y13z5bwp0b4kmwp].[yr:ship_date:ok]</column>
+            <column>[federated.12yhc75078830y13z5bwp0b4kmwp].[Action (Customer Segment)]</column>
+            <column>[federated.12yhc75078830y13z5bwp0b4kmwp].[none:customer_segment:nk]</column>
           </slices>
           <aggregation value='true' />
         </view>
@@ -1682,8 +1792,8 @@
         <datasource caption='orders (retail.orders)+ (retail_sales)' name='federated.12yhc75078830y13z5bwp0b4kmwp' />
       </datasources>
       <datasource-dependencies datasource='Parameters'>
-        <column caption='Top N' datatype='integer' name='[Parameter 1]' param-domain-type='range' role='measure' type='quantitative' value='12'>
-          <calculation class='tableau' formula='12' />
+        <column caption='Top N' datatype='integer' name='[Parameter 1]' param-domain-type='range' role='measure' type='quantitative' value='14'>
+          <calculation class='tableau' formula='14' />
           <range granularity='1' max='20' min='1' />
         </column>
       </datasource-dependencies>
@@ -1745,8 +1855,8 @@
         <devicelayout auto-generated='true' name='Phone'>
           <size maxheight='750' minheight='750' sizing-mode='vscroll' />
           <zones>
-            <zone h='100000' id='36' type-v2='layout-basic' w='100000' x='0' y='0'>
-              <zone h='98000' id='35' param='vert' type-v2='layout-flow' w='98400' x='800' y='1000'>
+            <zone h='100000' id='38' type-v2='layout-basic' w='100000' x='0' y='0'>
+              <zone h='98000' id='37' param='vert' type-v2='layout-flow' w='98400' x='800' y='1000'>
                 <zone h='18875' id='12' mode='checkdropdown' name='CUST_Segment_Distribution_Pie' param='[federated.12yhc75078830y13z5bwp0b4kmwp].[none:customer_segment:nk]' type-v2='filter' values='database' w='15900' x='83300' y='1000'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
@@ -1804,68 +1914,66 @@
         <datasource caption='orders (retail.orders)+ (retail_sales)' name='federated.12yhc75078830y13z5bwp0b4kmwp' />
       </datasources>
       <datasource-dependencies datasource='Parameters'>
-        <column caption='Top N' datatype='integer' name='[Parameter 1]' param-domain-type='range' role='measure' type='quantitative' value='12'>
-          <calculation class='tableau' formula='12' />
+        <column caption='Top N' datatype='integer' name='[Parameter 1]' param-domain-type='range' role='measure' type='quantitative' value='14'>
+          <calculation class='tableau' formula='14' />
           <range granularity='1' max='20' min='1' />
         </column>
       </datasource-dependencies>
       <datasource-dependencies datasource='federated.12yhc75078830y13z5bwp0b4kmwp'>
-        <column-instance column='[order_id]' derivation='CountD' name='[ctd:order_id:qk]' pivot='key' type='quantitative' />
-        <column-instance column='[region]' derivation='None' name='[none:region:nk]' pivot='key' type='nominal' />
-        <column caption='Order Date' datatype='date' name='[order_date]' role='dimension' type='ordinal' />
-        <column datatype='integer' name='[order_id]' role='measure' type='quantitative' />
-        <column caption='Region' datatype='string' name='[region]' role='dimension' type='nominal' />
-        <column caption='Ship Date' datatype='date' name='[ship_date]' role='dimension' type='ordinal' />
-        <column-instance column='[order_date]' derivation='Year' name='[yr:order_date:ok]' pivot='key' type='ordinal' />
-        <column-instance column='[ship_date]' derivation='Year' name='[yr:ship_date:ok]' pivot='key' type='ordinal' />
+        <column caption='Customer Segment' datatype='string' name='[customer_segment]' role='dimension' type='nominal' />
+        <column-instance column='[customer_segment]' derivation='None' name='[none:customer_segment:nk]' pivot='key' type='nominal' />
       </datasource-dependencies>
       <zones>
         <zone h='100000' id='4' type-v2='layout-basic' w='100000' x='0' y='0'>
-          <zone h='98000' id='7' param='horz' type-v2='layout-flow' w='98400' x='800' y='1000'>
-            <zone h='98000' id='5' type-v2='layout-basic' w='82400' x='800' y='1000'>
-              <zone h='32666' id='3' name='ORD_Priority_ShipMode_BAR' w='41200' x='800' y='1000'>
-                <zone-style>
-                  <format attr='border-color' value='#000000' />
-                  <format attr='border-style' value='none' />
-                  <format attr='border-width' value='0' />
-                  <format attr='margin' value='4' />
-                </zone-style>
-              </zone>
-              <zone h='32666' id='12' name='PRD_Sales_Profit_DualLine' w='41200' x='800' y='66334'>
-                <zone-style>
-                  <format attr='border-color' value='#000000' />
-                  <format attr='border-style' value='none' />
-                  <format attr='border-width' value='0' />
-                  <format attr='margin' value='4' />
-                </zone-style>
-              </zone>
-              <zone h='32666' id='15' name='CUST_Segment_Distribution_Pie' w='41200' x='42000' y='1000'>
-                <zone-style>
-                  <format attr='border-color' value='#000000' />
-                  <format attr='border-style' value='none' />
-                  <format attr='border-width' value='0' />
-                  <format attr='margin' value='4' />
-                </zone-style>
-              </zone>
-              <zone h='32666' id='17' name='PRD_Top_Products_TABLE' w='41200' x='42000' y='66334'>
-                <zone-style>
-                  <format attr='border-color' value='#000000' />
-                  <format attr='border-style' value='none' />
-                  <format attr='border-width' value='0' />
-                  <format attr='margin' value='4' />
-                </zone-style>
-              </zone>
-              <zone h='32668' id='20' name='CUST_Profit_Rank_TABLE' w='82400' x='800' y='33666'>
-                <zone-style>
-                  <format attr='border-color' value='#000000' />
-                  <format attr='border-style' value='none' />
-                  <format attr='border-width' value='0' />
-                  <format attr='margin' value='4' />
-                </zone-style>
+          <zone h='98000' id='35' param='horz' type-v2='layout-flow' w='98400' x='800' y='1000'>
+            <zone h='98000' id='33' type-v2='layout-basic' w='82400' x='800' y='1000'>
+              <zone h='98000' id='7' param='horz' type-v2='layout-flow' w='82400' x='800' y='1000'>
+                <zone h='98000' id='5' type-v2='layout-basic' w='82400' x='800' y='1000'>
+                  <zone h='32666' id='3' name='ORD_Priority_ShipMode_BAR' w='41199' x='800' y='1000'>
+                    <zone-style>
+                      <format attr='border-color' value='#000000' />
+                      <format attr='border-style' value='none' />
+                      <format attr='border-width' value='0' />
+                      <format attr='margin' value='4' />
+                    </zone-style>
+                  </zone>
+                  <zone h='32666' id='12' name='PRD_Sales_Profit_DualLine' w='41199' x='800' y='66334'>
+                    <zone-style>
+                      <format attr='border-color' value='#000000' />
+                      <format attr='border-style' value='none' />
+                      <format attr='border-width' value='0' />
+                      <format attr='margin' value='4' />
+                    </zone-style>
+                  </zone>
+                  <zone h='32666' id='15' name='CUST_Segment_Distribution_Pie' w='41201' x='41999' y='1000'>
+                    <zone-style>
+                      <format attr='border-color' value='#000000' />
+                      <format attr='border-style' value='none' />
+                      <format attr='border-width' value='0' />
+                      <format attr='margin' value='4' />
+                    </zone-style>
+                  </zone>
+                  <zone h='32666' id='17' name='PRD_Top_Products_TABLE' w='41201' x='41999' y='66334'>
+                    <zone-style>
+                      <format attr='border-color' value='#000000' />
+                      <format attr='border-style' value='none' />
+                      <format attr='border-width' value='0' />
+                      <format attr='margin' value='4' />
+                    </zone-style>
+                  </zone>
+                  <zone h='32668' id='20' name='CUST_Profit_Rank_TABLE' w='82400' x='800' y='33666'>
+                    <zone-style>
+                      <format attr='border-color' value='#000000' />
+                      <format attr='border-style' value='none' />
+                      <format attr='border-width' value='0' />
+                      <format attr='margin' value='4' />
+                    </zone-style>
+                  </zone>
+                </zone>
               </zone>
             </zone>
-            <zone fixed-size='160' h='98000' id='6' is-fixed='true' param='vert' type-v2='layout-flow' w='16000' x='83200' y='1000'>
-              <zone h='17708' id='8' name='ORD_Priority_ShipMode_BAR' param='[federated.12yhc75078830y13z5bwp0b4kmwp].[none:region:nk]' type-v2='filter' w='16000' x='83200' y='1000'>
+            <zone fixed-size='160' h='98000' id='34' is-fixed='true' param='vert' type-v2='layout-flow' w='16000' x='83200' y='1000'>
+              <zone h='18875' id='36' name='CUST_Segment_Distribution_Pie' param='[federated.12yhc75078830y13z5bwp0b4kmwp].[none:customer_segment:nk]' type-v2='filter' values='database' w='16000' x='83200' y='1000'>
                 <zone-style>
                   <format attr='border-color' value='#000000' />
                   <format attr='border-style' value='none' />
@@ -1873,47 +1981,7 @@
                   <format attr='margin' value='4' />
                 </zone-style>
               </zone>
-              <zone h='17708' id='9' name='ORD_Priority_ShipMode_BAR' param='[federated.12yhc75078830y13z5bwp0b4kmwp].[yr:order_date:ok]' type-v2='filter' w='16000' x='83200' y='18708'>
-                <zone-style>
-                  <format attr='border-color' value='#000000' />
-                  <format attr='border-style' value='none' />
-                  <format attr='border-width' value='0' />
-                  <format attr='margin' value='4' />
-                </zone-style>
-              </zone>
-              <zone h='9125' id='10' name='ORD_Priority_ShipMode_BAR' param='[federated.12yhc75078830y13z5bwp0b4kmwp].[ctd:order_id:qk]' show-domain='false' show-null-ctrls='false' type-v2='filter' w='16000' x='83200' y='36416'>
-                <zone-style>
-                  <format attr='border-color' value='#000000' />
-                  <format attr='border-style' value='none' />
-                  <format attr='border-width' value='0' />
-                  <format attr='margin' value='4' />
-                </zone-style>
-              </zone>
-              <zone h='11625' id='11' name='ORD_Priority_ShipMode_BAR' pane-specification-id='0' param='[federated.12yhc75078830y13z5bwp0b4kmwp].[none:ship_mode:nk]' type-v2='color' w='16000' x='83200' y='45541'>
-                <zone-style>
-                  <format attr='border-color' value='#000000' />
-                  <format attr='border-style' value='none' />
-                  <format attr='border-width' value='0' />
-                  <format attr='margin' value='4' />
-                </zone-style>
-              </zone>
-              <zone h='14250' id='16' name='CUST_Segment_Distribution_Pie' pane-specification-id='0' param='[federated.12yhc75078830y13z5bwp0b4kmwp].[none:customer_segment:nk]' type-v2='color' w='16000' x='83200' y='57166'>
-                <zone-style>
-                  <format attr='border-color' value='#000000' />
-                  <format attr='border-style' value='none' />
-                  <format attr='border-width' value='0' />
-                  <format attr='margin' value='4' />
-                </zone-style>
-              </zone>
-              <zone h='17708' id='18' name='PRD_Top_Products_TABLE' param='[federated.12yhc75078830y13z5bwp0b4kmwp].[yr:ship_date:ok]' type-v2='filter' w='16000' x='83200' y='71416'>
-                <zone-style>
-                  <format attr='border-color' value='#000000' />
-                  <format attr='border-style' value='none' />
-                  <format attr='border-width' value='0' />
-                  <format attr='margin' value='4' />
-                </zone-style>
-              </zone>
-              <zone h='9876' id='19' mode='slider' param='[Parameters].[Parameter 1]' type-v2='paramctrl' w='16000' x='83200' y='89124'>
+              <zone h='9875' id='19' mode='slider' param='[Parameters].[Parameter 1]' type-v2='paramctrl' w='16000' x='83200' y='19875'>
                 <zone-style>
                   <format attr='border-color' value='#000000' />
                   <format attr='border-style' value='none' />
@@ -1933,37 +2001,10 @@
       </zones>
       <devicelayouts>
         <devicelayout auto-generated='true' name='Phone'>
-          <size maxheight='1800' minheight='1800' sizing-mode='vscroll' />
+          <size maxheight='1700' minheight='1700' sizing-mode='vscroll' />
           <zones>
-            <zone h='100000' id='30' type-v2='layout-basic' w='100000' x='0' y='0'>
-              <zone h='98000' id='29' param='vert' type-v2='layout-flow' w='98400' x='800' y='1000'>
-                <zone h='17708' id='8' mode='checkdropdown' name='ORD_Priority_ShipMode_BAR' param='[federated.12yhc75078830y13z5bwp0b4kmwp].[none:region:nk]' type-v2='filter' w='16000' x='83200' y='1000'>
-                  <zone-style>
-                    <format attr='border-color' value='#000000' />
-                    <format attr='border-style' value='none' />
-                    <format attr='border-width' value='0' />
-                    <format attr='margin' value='4' />
-                    <format attr='padding' value='0' />
-                  </zone-style>
-                </zone>
-                <zone h='17708' id='9' mode='checkdropdown' name='ORD_Priority_ShipMode_BAR' param='[federated.12yhc75078830y13z5bwp0b4kmwp].[yr:order_date:ok]' type-v2='filter' w='16000' x='83200' y='18708'>
-                  <zone-style>
-                    <format attr='border-color' value='#000000' />
-                    <format attr='border-style' value='none' />
-                    <format attr='border-width' value='0' />
-                    <format attr='margin' value='4' />
-                    <format attr='padding' value='0' />
-                  </zone-style>
-                </zone>
-                <zone h='9125' id='10' name='ORD_Priority_ShipMode_BAR' param='[federated.12yhc75078830y13z5bwp0b4kmwp].[ctd:order_id:qk]' show-domain='false' show-null-ctrls='false' type-v2='filter' w='16000' x='83200' y='36416'>
-                  <zone-style>
-                    <format attr='border-color' value='#000000' />
-                    <format attr='border-style' value='none' />
-                    <format attr='border-width' value='0' />
-                    <format attr='margin' value='4' />
-                    <format attr='padding' value='0' />
-                  </zone-style>
-                </zone>
+            <zone h='100000' id='32' type-v2='layout-basic' w='100000' x='0' y='0'>
+              <zone h='98000' id='31' param='vert' type-v2='layout-flow' w='98400' x='800' y='1000'>
                 <zone fixed-size='253' h='32666' id='3' is-fixed='true' name='ORD_Priority_ShipMode_BAR' w='41200' x='800' y='1000'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
@@ -1973,25 +2014,7 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone h='11625' id='11' name='ORD_Priority_ShipMode_BAR' pane-specification-id='0' param='[federated.12yhc75078830y13z5bwp0b4kmwp].[none:ship_mode:nk]' type-v2='color' w='16000' x='83200' y='45541'>
-                  <zone-style>
-                    <format attr='border-color' value='#000000' />
-                    <format attr='border-style' value='none' />
-                    <format attr='border-width' value='0' />
-                    <format attr='margin' value='4' />
-                    <format attr='padding' value='0' />
-                  </zone-style>
-                </zone>
                 <zone fixed-size='253' h='32666' id='15' is-fixed='true' name='CUST_Segment_Distribution_Pie' w='41200' x='42000' y='1000'>
-                  <zone-style>
-                    <format attr='border-color' value='#000000' />
-                    <format attr='border-style' value='none' />
-                    <format attr='border-width' value='0' />
-                    <format attr='margin' value='4' />
-                    <format attr='padding' value='0' />
-                  </zone-style>
-                </zone>
-                <zone h='14250' id='16' name='CUST_Segment_Distribution_Pie' pane-specification-id='0' param='[federated.12yhc75078830y13z5bwp0b4kmwp].[none:customer_segment:nk]' type-v2='color' w='16000' x='83200' y='57166'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
@@ -2018,15 +2041,6 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone h='17708' id='18' mode='checkdropdown' name='PRD_Top_Products_TABLE' param='[federated.12yhc75078830y13z5bwp0b4kmwp].[yr:ship_date:ok]' type-v2='filter' w='16000' x='83200' y='71416'>
-                  <zone-style>
-                    <format attr='border-color' value='#000000' />
-                    <format attr='border-style' value='none' />
-                    <format attr='border-width' value='0' />
-                    <format attr='margin' value='4' />
-                    <format attr='padding' value='0' />
-                  </zone-style>
-                </zone>
                 <zone fixed-size='253' h='32666' id='17' is-fixed='true' name='PRD_Top_Products_TABLE' w='41200' x='42000' y='66334'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
@@ -2036,7 +2050,7 @@
                     <format attr='padding' value='0' />
                   </zone-style>
                 </zone>
-                <zone h='9876' id='19' mode='slider' param='[Parameters].[Parameter 1]' type-v2='paramctrl' w='16000' x='83200' y='89124'>
+                <zone h='15125' id='19' mode='slider' param='[Parameters].[Parameter 1]' type-v2='paramctrl' w='16000' x='83200' y='66375'>
                   <zone-style>
                     <format attr='border-color' value='#000000' />
                     <format attr='border-style' value='none' />
