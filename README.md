@@ -21,15 +21,15 @@ Data was loaded into the database using both manual SQL `INSERT` statements and 
 Comprehensive checks and cleaning were performed to ensure data integrity, removing duplicates, filling missing values, and correcting inconsistencies.
 - Related files: `data_cleaning.sql`, `data_quality_checks.sql`
 
-## 6. Exploratory Data Analysis (EDA) (in progress)
+## 6. Exploratory Data Analysis (EDA) 
 Basic analysis and summary queries were executed to discover trends, totals, and distributions within the data.
 - Related file: `eda_queries.sql`
 
-## 7. Advanced SQL Queries (in progress)
+## 7. Advanced SQL Queries 
 Window functions and performance optimizations are being implemented for deeper insights and efficient querying.
 - Related files: `advanced_analysis.sql`, `query_optimization.sql`
 
-## 8. Business Insights (in progress)
+## 8. Business Insights
 Key findings and analytical conclusions are documented to summarize project impact and business value.
 - Related file: `insights_summary.md` 
 
