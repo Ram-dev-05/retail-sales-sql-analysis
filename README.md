@@ -40,7 +40,8 @@ Tableau dashboards were created to complement SQL analysis with visual storytell
 - Customer Segmentation & Profit Ranking (interactive dashboard).
 - Regional Sales Performance & Monthly Sales Trends (maps and line charts).
 - Top Customer & Product Rankings with dynamic Top N filtering.
-Clear titles, captions, and interactivity were added for enhanced insight.
+- Clear titles, captions, and interactivity were added for enhanced insight.
+- Related File: `RetailAnalysis.png`
 
 ## Repository Organization
 
