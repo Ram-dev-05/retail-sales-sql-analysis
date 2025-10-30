@@ -1,9 +1,8 @@
 # Retail Sales SQL Analysis Project
 This project showcases a comprehensive SQL data analysis workflow for a retail sales business. It includes database schema design, data loading, cleaning, exploratory analysis, and advanced querying using window functions. The goal is to extract actionable business insights and demonstrate practical SQL expertise for data analysis roles.
 
-
 ## 1. GitHub Repository Setup
-The project repository was initialized with a descriptive name and a foundational README. Proper version control was established using `.gitignore`.  
+The project repository was initialized with a descriptive name and a foundational README. Proper version control was established using `.gitignore`.  
 - Related files: `.gitignore`, `README.md`
 
 ## 2. Data Modeling
@@ -34,16 +33,31 @@ Window functions and performance optimizations are being implemented for deeper 
 Key findings and analytical conclusions are documented to summarize project impact and business value.
 - Related file: `insights_summary.md` 
 
+## 9. Visualization
+Tableau dashboards were created to complement SQL analysis with visual storytelling, including:
+- Orders by Priority and Shipping Mode (bar chart).
+- Sales & Profit Analysis by Product Category & Top Products (dual line chart & table).
+- Customer Segmentation & Profit Ranking (interactive dashboard).
+- Regional Sales Performance & Monthly Sales Trends (maps and line charts).
+- Top Customer & Product Rankings with dynamic Top N filtering.
+Clear titles, captions, and interactivity were added for enhanced insight.
+
 ## Repository Organization
-Files are organized by function, making navigation intuitive.  
+
+Files are organized by function, making navigation intuitive.  
+
 - All primary scripts and documents are in the root directory.
 - Data and diagrams are updated as the project evolves.
 
 ## How to Use
-- Clone the repository  
-- Run `create_tables.sql` and `data_load.sql`  
-- Clean and validate with relevant scripts  
-- Analyze data as needed  
+
+- Clone the repository.
+- Run `create_tables.sql` and `data_load.sql`.
+- Clean and validate with relevant scripts.
+- Analyze data as needed.
+- Explore Tableau dashboards for visual insights.
+
+
 
 
 
